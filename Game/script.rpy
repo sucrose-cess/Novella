@@ -60,6 +60,7 @@ init python:
         "MUTE": "KW_MUTE",
         "RUN": "KW_RUN",
         "WALK": "KW_WALK",
+        "JUMP": "KW_JUMP",
         "CHOICE": "KW_CHOICE",
         "REPEAT": "KW_REPEAT"
     }
@@ -69,7 +70,7 @@ init python:
         "KW_FROM",
         "KW_LEFT", "KW_RIGHT", "KW_CENTER", "KW_TOP", "KW_BOTTOM",
         "KW_HIDE", "KW_ENTER", "KW_EXIT",
-        "KW_RUN", "KW_WALK",
+        "KW_RUN", "KW_WALK", "KW_JUMP",
         "KW_CHOICE"
     }
 
