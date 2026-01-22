@@ -1,4 +1,4 @@
-﻿# Variables
+# Variables
 default vnl_file_text = ""
 default lexer_input = ""
 default lexer_tokens = []
@@ -64,6 +64,15 @@ init python:
         "REPEAT": "KW_REPEAT"
     }
 
+    # Keywords that should NOT absorb an identifier
+    NO_IDENTIFIER_KEYWORDS = {
+        "KW_FROM",
+        "KW_LEFT", "KW_RIGHT", "KW_CENTER", "KW_TOP", "KW_BOTTOM",
+        "KW_HIDE", "KW_ENTER", "KW_EXIT",
+        "KW_RUN", "KW_WALK",
+        "KW_CHOICE"
+    }
+
     NOISE_WORDS = {"the", "a", "an", "to", "then", "at"}
     VALID_SYMBOLS = set("+-*/%=><!^_()[]:,.;~&")
     TWO_CHAR_OPS = {"==", "!=", ">=", "<="}
@@ -113,24 +122,24 @@ init python:
                 if ttype is None:
                     if word.lower() in NOISE_WORDS:
                         continue
-                    ttype = "IDENTIFIER"
+                    tokens.append(Token("IDENTIFIER", word))
+                    continue
 
-                tokens.append(Token(ttype, word))
+                token = Token(ttype, word)
 
-                if ttype == "KW_CHARACTER":
+                if ttype not in NO_IDENTIFIER_KEYWORDS:
                     while i < len(text) and text[i].isspace():
                         i += 1
+
                     start = i
                     while i < len(text) and (text[i].isalnum() or text[i] == "_"):
                         i += 1
-                    name = text[start:i]
-                    if name:
-                        tokens[-1].source = name
-                    if i < len(text) and text[i] == ":":
-                        tokens.append(Token("SYMBOL", ":"))
-                        i += 1
-                    else:
-                        tokens.append(Token("ERROR", "Expected ':'"))
+
+                    identifier = text[start:i]
+                    if identifier:
+                        token.source = "{}".format(identifier)
+
+                tokens.append(token)
                 continue
 
             if c.isdigit():
@@ -297,5 +306,3 @@ label start:
     show saveload_ground
     $ renpy.pause()
     return
-
-
