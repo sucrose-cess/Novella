@@ -1,0 +1,5 @@
+CHARACTER Milk:
+ proud = "milk_proud.png"
+ blush = "milk_blush.png"
+
+SCENE classroom
